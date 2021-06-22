@@ -1,0 +1,21 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "About this site",
+      "description": "Some additional details about the website",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-06-22T15:34:11-04:00"
+    },
+    {
+      "path": "index.html",
+      "title": "EPL_20_21_Visualization",
+      "description": "Welcome to the website. I hope you enjoy it!\n",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-06-22T15:34:18-04:00"
+    }
+  ],
+  "collections": []
+}
