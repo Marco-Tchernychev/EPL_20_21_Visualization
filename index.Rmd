@@ -6,13 +6,76 @@ site: distill::distill_website
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 
-# Learn more about creating websites with Distill at:
-# https://rstudio.github.io/distill/website.html
+library(tidyverse)
+library(plotly)
 
-# Learn more about publishing to GitHub Pages at:
-# https://rstudio.github.io/distill/publish_website.html#github-pages
+EPL_20_21 <- read.csv("EPL_20_21.csv", header = TRUE)
 
+view(EPL_20_21)
 ```
 
+
+```{r age vs goals wrangling and plot}
+age_v_goals <- EPL_20_21 %>% select(Age, Goals) %>% 
+              group_by(Age) %>%
+              arrange(Age) %>%
+              summarize(Age, TotalGoalsPerAge = sum(Goals)) %>% 
+              ggplot(aes(x = Age, 
+                         y = TotalGoalsPerAge,
+                         text = paste("Age:", Age, "\n", 
+                                      "Total Goals for Age Group:",    TotalGoalsPerAge))) + 
+              geom_col(position = "dodge", 
+                       fill = "steelblue") + 
+              theme_classic() + 
+              labs(title = "Total Goals Per Age Across the 20/21 EPL Season", 
+                   x = "Age", 
+                   y = "Total Goals for Age Group")
+```
+
+
+```{r age vs goals ggplotly}
+ggplotly(age_v_goals, tooltip = "text")
+```
+
+
+```{r nationality vs passes wrangling}
+CleanPassData <- EPL_20_21 %>% select(Name, Nationality, Position, Mins, Passes_Attempted) %>%
+              mutate(PassesAttemptedPer90 = Passes_Attempted/Mins*90) %>% 
+              mutate(ExactMatches = Mins/90) %>%
+              arrange(desc(ExactMatches)) %>%
+              slice(1:209) %>%
+              arrange(desc(PassesAttemptedPer90)) %>%
+              mutate(IsGK = str_detect(Position, pattern = "GK")) %>%
+              filter(str_detect(IsGK, pattern = "FALSE")) %>% 
+              select(Name, Nationality, PassesAttemptedPer90) %>%
+              group_by(Nationality) %>% 
+              mutate(IsAlone = n()) %>% 
+              arrange(IsAlone) %>% 
+              mutate(LessThan4 = ifelse(IsAlone >= 4, "keep", "out")) %>%
+              filter(str_detect(LessThan4, pattern = "keep")) %>% 
+              summarize(Nationality, AvgPassesAttPer90 = sum(PassesAttemptedPer90)/n()) %>% 
+              arrange(AvgPassesAttPer90) 
+```
+
+
+```{r nationality vs passes plot}
+FinalPassData <- CleanPassData %>% ggplot(aes(x = reorder(Nationality, AvgPassesAttPer90), 
+                             AvgPassesAttPer90, 
+                             fill = Nationality,
+                             text =  paste("Country:", Nationality, "\n", 
+                                           "Average Passes Attempted Per Match:", AvgPassesAttPer90))) + 
+                  geom_col(position = "dodge") + 
+                  theme_classic() + 
+                  labs(title = "Average Passes Per 90 Minutes for Countries with More than 3 Outfield Players \n\ Who Have Played More than Half the EPL Season", 
+                       subtitle = "", 
+                       x = "Country", 
+                       y = "Average Passes Per 90 Minutes", 
+                       caption = "")
+```
+
+
+```{r nationality vs passes ggplotly}
+ggplotly(FinalPassData, tooltip = "text")
+```
