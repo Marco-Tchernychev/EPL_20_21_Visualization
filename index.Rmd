@@ -68,7 +68,7 @@ FinalPassData <- CleanPassData %>% ggplot(aes(x = reorder(Nationality, AvgPasses
                                            "Average Passes Attempted Per Match:", AvgPassesAttPer90))) + 
                   geom_col(position = "dodge") + 
                   theme_classic() + 
-                  labs(title = "Average Passes Per 90 Minutes for Countries with More than 3 Outfield Players \n\ Who Have Played More than Half the EPL Season", 
+                  labs(title = "Average Pass Attempts Per Match for Countries with More than 3 \n\ Outfield Players Who Have Played More than Half the Season", 
                        subtitle = "", 
                        x = "Country", 
                        y = "Average Passes Attempted Per Match", 
