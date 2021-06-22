@@ -5,7 +5,7 @@ description: |
 site: distill::distill_website
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, layout = "l-body-outset"}
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
@@ -71,7 +71,7 @@ FinalPassData <- CleanPassData %>% ggplot(aes(x = reorder(Nationality, AvgPasses
                   labs(title = "Average Passes Per 90 Minutes for Countries with More than 3 Outfield Players \n\ Who Have Played More than Half the EPL Season", 
                        subtitle = "", 
                        x = "Country", 
-                       y = "Average Passes Per 90 Minutes", 
+                       y = "Average Passes Attempted Per Match", 
                        caption = "")
 ```
 
