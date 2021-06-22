@@ -1,7 +1,7 @@
 ---
-title: "EPL_20_21_Visualization"
+title: "Visualizations for the 20/21 Premier League Season"
 description: |
-  Welcome to the website. I hope you enjoy it!
+  Here we look at the correlation between age and goals, as well as nationality and passing!
 site: distill::distill_website
 ---
 
